@@ -33,7 +33,10 @@ class Fit extends AbstractGdFilter
 
             // Prevent division by zero
             if (!$this->getHeight()) {
-                $maxHeight = 999999;
+                $this->setHeight(999999);
+            }
+            if (!$this->getWidth()) {
+                $this->setWidth(999999);
             }
 
             $source = $this->getGdImage();
@@ -76,7 +79,7 @@ class Fit extends AbstractGdFilter
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        return $dir . sha1($this->getImage() . $methodName . join(' ', $options)) . '.jpg';
+        return $dir . sha1($this->getImage()->getFile() . $methodName . join(' ', $options)) . '.jpg';
     }
 
     /**
