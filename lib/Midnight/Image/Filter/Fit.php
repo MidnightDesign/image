@@ -25,6 +25,7 @@ class Fit extends AbstractGdFilter
      */
     public function filter($value)
     {
+        parent::filter($value);
         $cacheFile = $this->makeCachePath(__METHOD__, array($this->getWidth(), $this->getHeight()));
         if (!file_exists($cacheFile)) {
             $originalMemoryLimit = ini_get('memory_limit');
