@@ -1,8 +1,10 @@
 <?php
-
+/**
+ * @copyright Copyright (c) 2013 Rudolph Gottesheim
+ * @license   http://opensource.org/licenses/MIT
+ */
 
 namespace Midnight\Image\Info;
-
 
 use Midnight\Image\Image;
 use Midnight\Image\ImageInterface;
