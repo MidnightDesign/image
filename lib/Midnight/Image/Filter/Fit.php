@@ -25,6 +25,11 @@ class Fit extends AbstractGdFilter
      */
     public function filter($value)
     {
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+        if(empty($width) || empty($height)) {
+            throw new Exception('There must be a width and a height set.');
+        }
         parent::filter($value);
         $cacheFile = $this->makeCachePath(__METHOD__, array($this->getWidth(), $this->getHeight()));
         if (!file_exists($cacheFile)) {

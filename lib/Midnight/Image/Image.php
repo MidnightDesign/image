@@ -9,7 +9,7 @@ class Image implements ImageInterface
 {
     private $file;
     /**
-     * @var array Cache for the plugin call
+     * @var AbstractImageFilter[] Cache for the plugin call
      */
     private $__pluginCache = array();
     /**
@@ -53,7 +53,10 @@ class Image implements ImageInterface
             $this->__pluginCache[$method] = $this->plugin($method);
         }
         if (is_callable($this->__pluginCache[$method])) {
-            return call_user_func_array($this->__pluginCache[$method], $argv);
+            if (!empty($argv[0])) {
+                $this->__pluginCache[$method]->setOptions($argv[0]);
+            }
+            return call_user_func($this->__pluginCache[$method], $this);
         }
         return $this->__pluginCache[$method];
     }
