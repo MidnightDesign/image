@@ -21,75 +21,66 @@ class Fit extends AbstractGdFilter
      * @param  Image $value
      * @throws Exception
      * @return Image
-     * TODO Encapsulate caching in a separate class
      */
     public function filter($value)
     {
         $width = $this->getWidth();
         $height = $this->getHeight();
-        if(empty($width) || empty($height)) {
+        if (empty($width) || empty($height)) {
             throw new Exception('There must be a width and a height set.');
         }
+
         parent::filter($value);
 
-        if($this->getCache()->exists($this)) {
-            return \Midnight\Image\Image::open($this->getCache()->getPath($this));
+        $cache = $this->getCache();
+        $cache_path = $cache->getPath($this);
+        if ($cache->exists($this)) {
+            return Image::open($cache_path);
         }
 
-        $cacheFile = $this->makeCachePath(__METHOD__, array($this->getWidth(), $this->getHeight()));
-        if (!file_exists($cacheFile)) {
-            $originalMemoryLimit = ini_get('memory_limit');
-            ini_set('memory_limit', '1024M');
+        $originalMemoryLimit = ini_get('memory_limit');
+        ini_set('memory_limit', '1024M');
 
-            // Prevent division by zero
-            if (!$this->getHeight()) {
-                $this->setHeight(999999);
-            }
-            if (!$this->getWidth()) {
-                $this->setWidth(999999);
-            }
-
-            $source = $this->getGdImage();
-
-            // Calculate dimensions
-            $sourceWidth = imagesx($source);
-            $sourceHeight = imagesy($source);
-
-            if ($sourceWidth / $this->getWidth() < $sourceHeight / $this->getHeight()) {
-                $ratio = $sourceHeight / $maxHeight;
-            } else {
-                $ratio = $sourceWidth / $this->getWidth();
-            }
-            $targetWidth = round($sourceWidth / $ratio);
-            $targetHeight = round($sourceHeight / $ratio);
-
-            // Create destination image
-            $target = imagecreatetruecolor($targetWidth, $targetHeight);
-
-            // Place source image
-            imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $sourceWidth, $sourceHeight);
-
-            imagejpeg($target, $cacheFile, 100);
-            if (!file_exists($cacheFile)) {
-                throw new Exception('Couldn\'t create cache image ' . $cacheFile . '.');
-            }
-            chmod($cacheFile, 0777);
-
-            unset($target);
-            unset($source);
-
-            ini_set('memory_limit', $originalMemoryLimit);
+        // Prevent division by zero
+        if (!$height) {
+            $this->setHeight(999999);
         }
-        return Image::open($cacheFile);
-    }
-
-    private function makeCachePath($methodName, array $options = array())
-    {
-        $dir = self::CACHE_PATH;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+        if (!$width) {
+            $this->setWidth(999999);
         }
-        return $dir . sha1($this->getImage()->getFile() . $methodName . join(' ', $options)) . '.jpg';
+
+        $source = $this->getGdImage();
+
+        // Calculate dimensions
+        $sourceWidth = imagesx($source);
+        $sourceHeight = imagesy($source);
+
+        if ($sourceWidth / $width < $sourceHeight / $height) {
+            $ratio = $sourceHeight / $height;
+        } else {
+            $ratio = $sourceWidth / $width;
+        }
+        $targetWidth = round($sourceWidth / $ratio);
+        $targetHeight = round($sourceHeight / $ratio);
+
+        // Create destination image
+        $target = imagecreatetruecolor($targetWidth, $targetHeight);
+
+        // Place source image
+        imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $sourceWidth, $sourceHeight);
+
+        imagejpeg($target, $cache_path, 100);
+        if (!file_exists($cache_path)) {
+            throw new Exception('Couldn\'t create cache image ' . $cache_path . '.');
+        }
+        chmod($cache_path, 0777);
+
+        unset($target);
+        unset($source);
+
+        ini_set('memory_limit', $originalMemoryLimit);
+
+        return Image::open($cache_path);
     }
 
     /**

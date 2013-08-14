@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Midnight\\Grid\\": "lib/"
+            "Midnight\\Image\\": "lib/"
         }
     }
 }
