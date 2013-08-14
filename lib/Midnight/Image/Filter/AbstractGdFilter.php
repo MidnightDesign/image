@@ -2,11 +2,19 @@
 
 namespace Midnight\Image\Filter;
 
+use Exception;
+use Midnight\Image\Image;
 use Midnight\Image\Info\Type;
 
 abstract class AbstractGdFilter extends AbstractImageFilter
 {
-
+    /**
+     * @var string
+     */
+    public $originalMemoryLimit;
+    /**
+     * @var resource
+     */
     private $gdImage;
 
     protected function getGdImage()
@@ -39,6 +47,48 @@ abstract class AbstractGdFilter extends AbstractImageFilter
     {
         $typeInfo = new Type();
         return $typeInfo->getType($this->getImage());
+    }
+
+    /**
+     * @param resource $res
+     * @return Image
+     * @throws Exception
+     */
+    protected function save($res)
+    {
+        $cache_path = $this->getCache()->getPath($this);
+        $image_type = $this->getImageType();
+        switch ($image_type) {
+            case Type::JPEG:
+                imagejpeg($res, $cache_path, 100);
+                break;
+            case Type::GIF:
+                imagegif($res, $cache_path);
+                break;
+            case Type::PNG:
+                imagepng($res, $cache_path);
+                break;
+            default:
+                throw new Exception('Unrecognized image type ' . $image_type . '.');
+                break;
+        }
+        if (!file_exists($cache_path)) {
+            throw new Exception('Couldn\'t create cache image ' . $cache_path . '.');
+        }
+        chmod($cache_path, 0777);
+
+        return Image::open($cache_path);
+    }
+
+    protected function increaseMemoryLimit()
+    {
+        $this->originalMemoryLimit = ini_get('memory_limit');
+        ini_set('memory_limit', '512M');
+    }
+
+    protected function resetMemoryLimit()
+    {
+        ini_set('memory_limit', $this->originalMemoryLimit);
     }
 
 }

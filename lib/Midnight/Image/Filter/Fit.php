@@ -34,21 +34,11 @@ class Fit extends AbstractGdFilter
         parent::filter($value);
 
         $cache = $this->getCache();
-        $cache_path = $cache->getPath($this);
         if ($cache->exists($this)) {
-            return Image::open($cache_path);
+            return Image::open($cache->getPath($this));
         }
 
-        $originalMemoryLimit = ini_get('memory_limit');
-        ini_set('memory_limit', '1024M');
-
-        // Prevent division by zero
-        if (!$height) {
-            $this->setHeight(999999);
-        }
-        if (!$width) {
-            $this->setWidth(999999);
-        }
+        $this->increaseMemoryLimit();
 
         $source = $this->getGdImage();
 
@@ -66,38 +56,20 @@ class Fit extends AbstractGdFilter
 
         // Create destination image
         $target = imagecreatetruecolor($targetWidth, $targetHeight);
-        imagealphablending( $target, false );
-        imagesavealpha( $target, true );
+        imagealphablending($target, false);
+        imagesavealpha($target, true);
 
         // Place source image
         imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $sourceWidth, $sourceHeight);
 
-        $image_type = $this->getImageType();
-        switch ($image_type) {
-            case Type::JPEG:
-                imagejpeg($target, $cache_path, 100);
-                break;
-            case Type::GIF:
-                imagegif($target, $cache_path);
-                break;
-            case Type::PNG:
-                imagepng($target, $cache_path);
-                break;
-            default:
-                throw new Exception('Unrecognized image type ' . $image_type . '.');
-                break;
-        }
-        if (!file_exists($cache_path)) {
-            throw new Exception('Couldn\'t create cache image ' . $cache_path . '.');
-        }
-        chmod($cache_path, 0777);
+        $image = $this->save($target);
 
         unset($target);
         unset($source);
 
-        ini_set('memory_limit', $originalMemoryLimit);
+        $this->resetMemoryLimit();
 
-        return Image::open($cache_path);
+        return $image;
     }
 
     /**
