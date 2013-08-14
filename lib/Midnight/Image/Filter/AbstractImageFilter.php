@@ -16,6 +16,11 @@ abstract class AbstractImageFilter extends AbstractFilter
     private $image;
 
     /**
+     * @var FilterCacheInterface
+     */
+    private $cache;
+
+    /**
      * @return ImageInterface
      */
     public function getImage()
@@ -31,6 +36,17 @@ abstract class AbstractImageFilter extends AbstractFilter
     public function filter($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return FilterCacheInterface
+     */
+    protected function getCache()
+    {
+        if(is_null($this->cache)) {
+            $this->cache = new FilterCache();
+        }
+        return $this->cache;
     }
 
 }

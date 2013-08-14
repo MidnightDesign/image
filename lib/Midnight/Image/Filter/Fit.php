@@ -31,6 +31,11 @@ class Fit extends AbstractGdFilter
             throw new Exception('There must be a width and a height set.');
         }
         parent::filter($value);
+
+        if($this->getCache()->exists($this)) {
+            return \Midnight\Image\Image::open($this->getCache()->getPath($this));
+        }
+
         $cacheFile = $this->makeCachePath(__METHOD__, array($this->getWidth(), $this->getHeight()));
         if (!file_exists($cacheFile)) {
             $originalMemoryLimit = ini_get('memory_limit');
