@@ -5,8 +5,16 @@ namespace Midnight\Image;
 use Exception;
 use Midnight\Image\Filter\AbstractImageFilter;
 
+/**
+ * Class Image
+ * @package Midnight\Image
+ * @method Midnight\Image\Image fit() fit(array $options) Resize image to fit inside a rectangle (accepts 'width' and 'height' as options)
+ */
 class Image implements ImageInterface
 {
+    /**
+     * @var string
+     */
     private $file;
     /**
      * @var AbstractImageFilter[] Cache for the plugin call
@@ -19,16 +27,26 @@ class Image implements ImageInterface
      */
     private $__helpers;
 
+    /**
+     * @param string $file
+     */
     private function __construct($file)
     {
         $this->file = $file;
     }
 
+    /**
+     * @param string $file
+     * @return Image
+     */
     public static function open($file)
     {
         return new self($file);
     }
 
+    /**
+     * @return string
+     */
     public function getFile()
     {
         return $this->file;
@@ -106,7 +124,7 @@ class Image implements ImageInterface
         }
         if (!$helpers instanceof ImagePluginManager) {
             throw new Exception(sprintf(
-                'Helper helpers must extend Zend\View\HelperPluginManager; got type "%s" instead',
+                'Helper helpers must extend Midnight\Image\ImagePluginManager; got type "%s" instead',
                 (is_object($helpers) ? get_class($helpers) : gettype($helpers))
             ));
         }
