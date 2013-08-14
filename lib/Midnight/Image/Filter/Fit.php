@@ -4,6 +4,7 @@ namespace Midnight\Image\Filter;
 
 use Exception;
 use Midnight\Image\Image;
+use Midnight\Image\Info\Type;
 
 class Fit extends AbstractGdFilter
 {
@@ -65,11 +66,27 @@ class Fit extends AbstractGdFilter
 
         // Create destination image
         $target = imagecreatetruecolor($targetWidth, $targetHeight);
+        imagealphablending( $target, false );
+        imagesavealpha( $target, true );
 
         // Place source image
         imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $sourceWidth, $sourceHeight);
 
-        imagejpeg($target, $cache_path, 100);
+        $image_type = $this->getImageType();
+        switch ($image_type) {
+            case Type::JPEG:
+                imagejpeg($target, $cache_path, 100);
+                break;
+            case Type::GIF:
+                imagegif($target, $cache_path);
+                break;
+            case Type::PNG:
+                imagepng($target, $cache_path);
+                break;
+            default:
+                throw new Exception('Unrecognized image type ' . $image_type . '.');
+                break;
+        }
         if (!file_exists($cache_path)) {
             throw new Exception('Couldn\'t create cache image ' . $cache_path . '.');
         }

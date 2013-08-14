@@ -10,6 +10,7 @@ class ImagePluginManager extends AbstractPluginManager
 {
     protected $invokableClasses = array(
         'fit' => 'Midnight\Image\Filter\Fit',
+        'type' => 'Midnight\Image\Info\Type',
     );
 
     public function validatePlugin($plugin)

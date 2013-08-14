@@ -12,8 +12,7 @@ abstract class AbstractGdFilter extends AbstractImageFilter
     protected function getGdImage()
     {
         if (!$this->gdImage) {
-            $typeInfo = new Type();
-            $type = $typeInfo->getType($this->getImage());
+            $type = $this->getImageType();
             $filename = $this->getImage()->getFile();
             switch ($type) {
                 case Type::JPEG:
@@ -31,6 +30,15 @@ abstract class AbstractGdFilter extends AbstractImageFilter
             }
         }
         return $this->gdImage;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getImageType()
+    {
+        $typeInfo = new Type();
+        return $typeInfo->getType($this->getImage());
     }
 
 }

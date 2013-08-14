@@ -2,6 +2,8 @@
 
 namespace Midnight\Image\Filter;
 
+use Midnight\Image\ImageInterface;
+
 class FilterCache implements FilterCacheInterface
 {
     const CACHE_ROOT = 'data/cache/midnight/image/';
@@ -25,6 +27,12 @@ class FilterCache implements FilterCacheInterface
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        return $dir . sha1($filter->getImage()->getFile() . get_class($filter) . join(' ', $filter->getOptions())) . '.jpg';
+        $image = $filter->getImage();
+        return $dir . sha1($image->getFile() . get_class($filter) . join(' ', $filter->getOptions())) . $this->getExtension($image);
+    }
+
+    private function getExtension(ImageInterface $image)
+    {
+        return strrchr($image->getFile(), '.');
     }
 }
