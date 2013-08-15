@@ -8,6 +8,7 @@ use Midnight\Image\Filter\AbstractImageFilter;
 /**
  * Class Image
  * @package Midnight\Image
+ * @method Image fill() fill(array $options) Resize image to fill a specified area (accepts 'width' and 'height' as options)
  * @method Image fit() fit(array $options) Resize image to fit inside a rectangle (accepts 'width' and 'height' as options)
  * @method string type() Get image type (JPEG, GIF, PNG, etc.)
  */
