@@ -13,6 +13,7 @@ class ImagePluginManager extends AbstractPluginManager
         'desaturate' => 'Midnight\Image\Filter\Desaturate',
         'fill' => 'Midnight\Image\Filter\Fill',
         'fit' => 'Midnight\Image\Filter\Fit',
+        'noise' => 'Midnight\Image\Filter\Noise',
         'type' => 'Midnight\Image\Info\Type',
     );
 
