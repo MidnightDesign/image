@@ -10,6 +10,7 @@ class ImagePluginManager extends AbstractPluginManager
 {
     protected $invokableClasses = array(
         'brighten' => 'Midnight\Image\Filter\Brighten',
+        'desaturate' => 'Midnight\Image\Filter\Desaturate',
         'fill' => 'Midnight\Image\Filter\Fill',
         'fit' => 'Midnight\Image\Filter\Fit',
         'type' => 'Midnight\Image\Info\Type',
