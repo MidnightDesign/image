@@ -8,15 +8,10 @@ use Midnight\Image\Info\Type;
 
 class Fit extends AbstractGdFilter
 {
-    const CACHE_PATH = 'data/cache/midnight/image/';
     /**
-     * @var int
+     * @var array
      */
-    private $width;
-    /**
-     * @var int
-     */
-    private $height;
+    protected $options = array('width' => null, 'height' => null);
 
     /**
      * @param  Image $value
@@ -25,8 +20,8 @@ class Fit extends AbstractGdFilter
      */
     public function filter($value)
     {
-        $width = $this->getWidth();
-        $height = $this->getHeight();
+        $width = $this->options['width'];
+        $height = $this->options['height'];
         if (empty($width) || empty($height)) {
             throw new Exception('There must be a width and a height set.');
         }
@@ -70,37 +65,5 @@ class Fit extends AbstractGdFilter
         $this->resetMemoryLimit();
 
         return $image;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    /**
-     * @param int $width
-     */
-    public function setWidth($width)
-    {
-        $this->width = $width;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHeight()
-    {
-        return $this->height;
-    }
-
-    /**
-     * @param int $height
-     */
-    public function setHeight($height)
-    {
-        $this->height = $height;
     }
 }

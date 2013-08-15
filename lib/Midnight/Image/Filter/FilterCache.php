@@ -28,7 +28,7 @@ class FilterCache implements FilterCacheInterface
             mkdir($dir, 0777, true);
         }
         $image = $filter->getImage();
-        return $dir . sha1($image->getFile() . get_class($filter) . join(' ', $filter->getOptions())) . $this->getExtension($image);
+        return $dir . sha1($image->getFile() . get_class($filter) . serialize($filter->getOptions())) . $this->getExtension($image);
     }
 
     private function getExtension(ImageInterface $image)

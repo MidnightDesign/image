@@ -9,6 +9,7 @@ use Zend\ServiceManager\AbstractPluginManager;
 class ImagePluginManager extends AbstractPluginManager
 {
     protected $invokableClasses = array(
+        'brighten' => 'Midnight\Image\Filter\Brighten',
         'fill' => 'Midnight\Image\Filter\Fill',
         'fit' => 'Midnight\Image\Filter\Fit',
         'type' => 'Midnight\Image\Info\Type',
