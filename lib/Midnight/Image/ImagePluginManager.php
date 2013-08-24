@@ -12,6 +12,7 @@ class ImagePluginManager extends AbstractPluginManager
         'brighten' => 'Midnight\Image\Filter\Brighten',
         'colorcast' => 'Midnight\Image\Filter\Colorcast',
         'desaturate' => 'Midnight\Image\Filter\Desaturate',
+        'dominantColor' => 'Midnight\Image\Info\DominantColor',
         'fill' => 'Midnight\Image\Filter\Fill',
         'fit' => 'Midnight\Image\Filter\Fit',
         'noise' => 'Midnight\Image\Filter\Noise',
