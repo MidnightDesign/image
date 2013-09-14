@@ -8,6 +8,7 @@
 
 namespace Midnight\Image\Info;
 
+use Midnight\Image\Exception\UnknownImageTypeException;
 use Midnight\Image\Image;
 use Midnight\Image\ImageInterface;
 
@@ -31,7 +32,7 @@ class Type
                 return self::GIF;
                 break;
             default:
-                throw new \Exception('Unrecognized image type ' . $type . '.');
+                throw new UnknownImageTypeException('Unrecognized image type ' . $type . '.');
                 break;
         }
     }

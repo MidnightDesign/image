@@ -9,6 +9,7 @@
 namespace Midnight\Image\Filter;
 
 use Exception;
+use Midnight\Image\Exception\UnknownImageTypeException;
 use Midnight\Image\Image;
 use Midnight\Image\Info\Type;
 
@@ -39,7 +40,7 @@ abstract class AbstractGdFilter extends AbstractImageFilter
                     $this->gdImage = imagecreatefromgif($filename);
                     break;
                 default:
-                    throw new \Exception('Unrecognized image type ' . $type . '.');
+                    throw new UnknownImageTypeException('Unrecognized image type ' . $type . '.');
                     break;
             }
         }
@@ -75,7 +76,7 @@ abstract class AbstractGdFilter extends AbstractImageFilter
                 imagepng($res, $cache_path);
                 break;
             default:
-                throw new Exception('Unrecognized image type ' . $image_type . '.');
+                throw new UnknownImageTypeException('Unrecognized image type ' . $image_type . '.');
                 break;
         }
         if (!file_exists($cache_path)) {

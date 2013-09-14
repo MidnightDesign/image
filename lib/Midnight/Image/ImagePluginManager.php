@@ -9,6 +9,7 @@
 namespace Midnight\Image;
 
 use Exception;
+use Midnight\Image\Exception\InvalidPluginException;
 use Midnight\Image\Filter\AbstractImageFilter;
 use Zend\ServiceManager\AbstractPluginManager;
 
@@ -32,7 +33,7 @@ class ImagePluginManager extends AbstractPluginManager
             return;
         }
 
-        throw new Exception(sprintf(
+        throw new InvalidPluginException(sprintf(
             'Plugin of type %s is invalid; must implement %s\Helper\HelperInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__
