@@ -74,3 +74,36 @@ Adds noise to the image. The only option available is `amount`.
 ```php
 $noisy = $image->noise(array('amount' => .1));
 ```
+Adding a custom filter
+----------------------
+You can easily add a custom filter:
+
+```php
+class MyCustomFilter extends \Midnight\Image\Filter\AbstractGdFilter
+{
+    public function filter($image)
+    {
+        parent::filter($image);
+
+        $cache = $this->getCache();
+        if ($cache->exists($this)) {
+            return Image::open($cache->getPath($this));
+        }
+
+        $im = $this->getGdImage();
+
+        // Do stuff to GD image resource $im
+
+        $image = $this->save($im);
+
+        return $image;
+    }
+}
+```
+```php
+$plugin_manager = \Midnight\Image\ImagePluginManager::getInstance();
+$plugin_manager->setService('myCustomFilter', 'MyCustomFilter');
+
+// Use the filter
+$filtered = \Midnight\Image\Image::open('file.jpg')->myCustomFilter();
+```
