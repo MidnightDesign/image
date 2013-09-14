@@ -8,13 +8,19 @@
 
 namespace Midnight\Image;
 
-use Exception;
 use Midnight\Image\Exception\InvalidPluginException;
 use Midnight\Image\Filter\AbstractImageFilter;
 use Zend\ServiceManager\AbstractPluginManager;
 
 class ImagePluginManager extends AbstractPluginManager
 {
+    const DEFAULT_KEY = 'default';
+
+    /**
+     * @var ImagePluginManager[]
+     */
+    private static $instancePool = array();
+
     protected $invokableClasses = array(
         'brighten' => 'Midnight\Image\Filter\Brighten',
         'colorcast' => 'Midnight\Image\Filter\Colorcast',
@@ -38,5 +44,19 @@ class ImagePluginManager extends AbstractPluginManager
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__
         ));
+    }
+
+    public static function getInstance($key = null)
+    {
+        if (null === $key) {
+            $key = self::DEFAULT_KEY;
+        }
+        if (!is_string($key)) {
+            throw new \InvalidArgumentException('The key must be a string.');
+        }
+        if (!isset(self::$instancePool[$key])) {
+            self::$instancePool[$key] = new self();
+        }
+        return self::$instancePool[$key];
     }
 }

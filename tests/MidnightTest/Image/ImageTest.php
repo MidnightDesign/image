@@ -64,4 +64,11 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $image = Image::open('data/php.jpg');
         $image->setHelperPluginManager(new \stdClass());
     }
+
+    public function testDefaultPluginManagerIsAlwaysTheSameObject()
+    {
+        $image1 = Image::open('data/php.jpg');
+        $image2 = Image::open('data/php.jpg');
+        $this->assertTrue($image1->getHelperPluginManager() === $image2->getHelperPluginManager());
+    }
 }

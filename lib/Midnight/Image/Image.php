@@ -117,7 +117,7 @@ class Image implements ImageInterface
     public function getHelperPluginManager()
     {
         if (null === $this->__helpers) {
-            $this->setHelperPluginManager(new ImagePluginManager());
+            $this->setHelperPluginManager(ImagePluginManager::getInstance());
         }
         return $this->__helpers;
     }
