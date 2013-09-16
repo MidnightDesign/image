@@ -11,6 +11,7 @@ namespace Midnight\Image\Filter;
 use Exception;
 use Midnight\Image\Exception\UnknownImageTypeException;
 use Midnight\Image\Image;
+use Midnight\Image\ImageInterface;
 use Midnight\Image\Info\Type;
 
 abstract class AbstractGdFilter extends AbstractImageFilter
@@ -19,6 +20,13 @@ abstract class AbstractGdFilter extends AbstractImageFilter
      * @var string
      */
     public $originalMemoryLimit;
+
+    protected function setImage(ImageInterface $image)
+    {
+        parent::setImage($image);
+        $this->gdImage = null;
+    }
+
     /**
      * @var resource
      */

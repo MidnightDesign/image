@@ -35,13 +35,21 @@ abstract class AbstractImageFilter extends AbstractFilter
     }
 
     /**
+     * @param ImageInterface $image
+     */
+    protected function setImage(ImageInterface $image)
+    {
+        $this->image = $image;
+    }
+
+    /**
      * @param  ImageInterface $image
      * @throws Exception\RuntimeException If filtering $value is impossible
      * @return ImageInterface
      */
     public function filter($image)
     {
-        $this->image = $image;
+        $this->setImage($image);
     }
 
     /**
@@ -49,7 +57,7 @@ abstract class AbstractImageFilter extends AbstractFilter
      */
     protected function getCache()
     {
-        if(is_null($this->cache)) {
+        if (is_null($this->cache)) {
             $this->cache = new FilterCache();
         }
         return $this->cache;
