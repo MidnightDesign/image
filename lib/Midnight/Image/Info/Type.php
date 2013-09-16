@@ -1,11 +1,14 @@
 <?php
 /**
+ * @author    Rudolph Gottesheim <r.gottesheim@loot.at>
+ * @link      http://github.com/MidnightDesign
  * @copyright Copyright (c) 2013 Rudolph Gottesheim
- * @license   http://opensource.org/licenses/MIT
+ * @license   http://opensource.org/licenses/MIT MIT License
  */
 
 namespace Midnight\Image\Info;
 
+use Midnight\Image\Exception\UnknownImageTypeException;
 use Midnight\Image\Image;
 use Midnight\Image\ImageInterface;
 
@@ -29,7 +32,7 @@ class Type
                 return self::GIF;
                 break;
             default:
-                throw new \Exception('Unrecognized image type ' . $type . '.');
+                throw new UnknownImageTypeException('Unrecognized image type ' . $type . '.');
                 break;
         }
     }

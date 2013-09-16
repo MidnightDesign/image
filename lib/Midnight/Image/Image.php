@@ -1,8 +1,16 @@
 <?php
+/**
+ * @author    Rudolph Gottesheim <r.gottesheim@loot.at>
+ * @link      http://github.com/MidnightDesign
+ * @copyright Copyright (c) 2013 Rudolph Gottesheim
+ * @license   http://opensource.org/licenses/MIT MIT License
+ */
 
 namespace Midnight\Image;
 
 use Exception;
+use Midnight\Image\Exception\FileDoesNotExistException;
+use Midnight\Image\Exception\InvalidPluginManagerException;
 use Midnight\Image\Filter\AbstractImageFilter;
 
 /**
@@ -35,11 +43,15 @@ class Image implements ImageInterface
 
     /**
      * @param string $file
+     * @throws FileDoesNotExistException
      */
     private function __construct($file)
     {
-        if(!is_string($file)) {
+        if (!is_string($file)) {
             throw new \InvalidArgumentException('The first argument passed to the Image constructor must be a string.');
+        }
+        if (!file_exists($file)) {
+            throw new FileDoesNotExistException('The file ' . $file . ' does not exist.');
         }
         $this->file = $file;
     }
@@ -108,7 +120,7 @@ class Image implements ImageInterface
     public function getHelperPluginManager()
     {
         if (null === $this->__helpers) {
-            $this->setHelperPluginManager(new ImagePluginManager());
+            $this->setHelperPluginManager(ImagePluginManager::getInstance());
         }
         return $this->__helpers;
     }
@@ -124,7 +136,7 @@ class Image implements ImageInterface
     {
         if (is_string($helpers)) {
             if (!class_exists($helpers)) {
-                throw new Exception(sprintf(
+                throw new InvalidPluginManagerException(sprintf(
                     'Invalid helper helpers class provided (%s)',
                     $helpers
                 ));
@@ -132,7 +144,7 @@ class Image implements ImageInterface
             $helpers = new $helpers();
         }
         if (!$helpers instanceof ImagePluginManager) {
-            throw new Exception(sprintf(
+            throw new InvalidPluginManagerException(sprintf(
                 'Helper helpers must extend Midnight\Image\ImagePluginManager; got type "%s" instead',
                 (is_object($helpers) ? get_class($helpers) : gettype($helpers))
             ));
