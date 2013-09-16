@@ -38,6 +38,9 @@ class Image implements ImageInterface
      */
     private function __construct($file)
     {
+        if(!is_string($file)) {
+            throw new \InvalidArgumentException('The first argument passed to the Image constructor must be a string.');
+        }
         $this->file = $file;
     }
 
