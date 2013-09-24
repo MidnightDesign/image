@@ -98,7 +98,10 @@ abstract class AbstractGdFilter extends AbstractImageFilter
     protected function increaseMemoryLimit()
     {
         $this->originalMemoryLimit = ini_get('memory_limit');
-        ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '-1');
+        if (ini_get('memory_limit') !== '-1') {
+            throw new Exception('Couldn\'t increase memory limit.');
+        }
     }
 
     protected function resetMemoryLimit()
