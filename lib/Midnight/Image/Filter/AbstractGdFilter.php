@@ -9,6 +9,7 @@
 namespace Midnight\Image\Filter;
 
 use Exception;
+use Midnight\Image\Exception\NotEnoughMemoryException;
 use Midnight\Image\Exception\UnknownImageTypeException;
 use Midnight\Image\Image;
 use Midnight\Image\ImageInterface;
@@ -37,6 +38,14 @@ abstract class AbstractGdFilter extends AbstractImageFilter
         if (!$this->gdImage) {
             $type = $this->getImageType();
             $filename = $this->getImage()->getFile();
+
+            $dimensions = getimagesize($filename);
+            $pixels = $dimensions[0] * $dimensions[1];
+            $mbytes_needed = ($pixels * 4) / 1024 / 1024;
+            if ($mbytes_needed > 40) {
+                throw new NotEnoughMemoryException('There is not enough memory available to open this image. (But the memory threshold is hard-coded right now!)');
+            }
+
             switch ($type) {
                 case Type::JPEG:
                     $this->gdImage = imagecreatefromjpeg($filename);
@@ -73,6 +82,7 @@ abstract class AbstractGdFilter extends AbstractImageFilter
     {
         $cache_path = $this->getCache()->getPath($this);
         $image_type = $this->getImageType();
+
         switch ($image_type) {
             case Type::JPEG:
                 imagejpeg($res, $cache_path, 100);
@@ -98,7 +108,10 @@ abstract class AbstractGdFilter extends AbstractImageFilter
     protected function increaseMemoryLimit()
     {
         $this->originalMemoryLimit = ini_get('memory_limit');
-        ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '-1');
+        if (ini_get('memory_limit') !== '-1') {
+            throw new Exception('Couldn\'t increase memory limit.');
+        }
     }
 
     protected function resetMemoryLimit()
