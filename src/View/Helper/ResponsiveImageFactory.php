@@ -21,7 +21,7 @@ class ResponsiveImageFactory implements FactoryInterface
     /**
      * @return string
      */
-    protected function getDestination()
+    protected function getDestination(ServiceLocatorInterface $serviceLocator)
     {
         return '.';
     }
@@ -29,7 +29,7 @@ class ResponsiveImageFactory implements FactoryInterface
     /**
      * @return string
      */
-    protected function getPublicDir()
+    protected function getPublicDir(ServiceLocatorInterface $serviceLocator)
     {
         return '.';
     }
