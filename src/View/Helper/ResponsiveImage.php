@@ -54,6 +54,7 @@ class ResponsiveImage
     /**
      * @param ImageInterface $image
      * @return ImageInterface[]
+     * @todo Check if the image exists first. Right now, all images are created every time.
      */
     private function getImages(ImageInterface $image)
     {
