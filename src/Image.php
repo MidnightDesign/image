@@ -102,4 +102,12 @@ class Image implements ImageInterface, WidthAware, HeightAware, FileNameAware
         }
         return $this->pluginManager;
     }
+
+    /**
+     * @param PluginManager $pluginManager
+     */
+    public function setPluginManager(PluginManager $pluginManager)
+    {
+        $this->pluginManager = $pluginManager;
+    }
 }

@@ -15,6 +15,22 @@ class ResponsiveImageFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ResponsiveImage('.', '.');
+        return new ResponsiveImage($this->getDestination($serviceLocator), $this->getPublicDir($serviceLocator));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDestination(ServiceLocatorInterface $serviceLocator)
+    {
+        return '.';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPublicDir(ServiceLocatorInterface $serviceLocator)
+    {
+        return '.';
     }
 }

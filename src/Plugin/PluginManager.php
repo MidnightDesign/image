@@ -16,11 +16,12 @@ use Zend\ServiceManager\Exception;
  */
 class PluginManager extends AbstractPluginManager
 {
-    public function __construct()
+    public function __construct(ConfigInterface $configuration = null)
     {
         // Add bundled plugins
         $this->setInvokableClass('contain', Contain::class);
         $this->setInvokableClass('cover', Cover::class);
+        parent::__construct($configuration);
     }
 
     /**
