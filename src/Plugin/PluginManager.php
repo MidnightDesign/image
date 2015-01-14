@@ -6,6 +6,7 @@ use Midnight\Image\Filter\Contain;
 use Midnight\Image\Filter\Cover;
 use Midnight\Image\View\Helper\ResponsiveImageFactory;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\ConfigInterface;
 use Zend\ServiceManager\Exception;
 
 /**
