@@ -9,7 +9,7 @@ class ResponsiveImageTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
-        $files = glob('assets/tmp/*');
+        $files = glob('tests/assets/tmp/*');
         foreach ($files as $file) {
             if (is_file($file)) {
                 unlink($file);
@@ -19,8 +19,8 @@ class ResponsiveImageTest extends \PHPUnit_Framework_TestCase
 
     public function testSimple()
     {
-        $helper = new ResponsiveImage('assets/tmp', 'assets');
-        $image = Image::open('assets/test.jpg');
+        $helper = new ResponsiveImage('tests/assets/tmp', 'assets');
+        $image = Image::open('tests/assets/test.jpg');
 
         $markup = $helper($image);
 

@@ -14,13 +14,13 @@ class ImageUrlTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->imageUrl = new ImageUrl('assets');
+        $this->imageUrl = new ImageUrl('tests/assets');
     }
 
     public function testInvoke()
     {
         $imageUrl = $this->imageUrl;
-        $image = Image::open('assets/test.jpg');
+        $image = Image::open('tests/assets/test.jpg');
         $this->assertEquals('/test.jpg', $imageUrl($image));
     }
 }

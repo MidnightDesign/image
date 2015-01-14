@@ -7,6 +7,9 @@
         "php": "~5.5",
         "zendframework/zend-servicemanager": "~2.3"
     },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
     "authors": [
         {
             "name": "Rudolph Gottesheim",

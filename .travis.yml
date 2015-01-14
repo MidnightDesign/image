@@ -6,7 +6,10 @@ php:
   - hhvm
 
 install:
-  - composer install
+  - composer install --dev --no-interaction
 
 script:
-  - cd tests/ && phpunit && cd ..
+  - phpunit -c tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
+
+after_script:
+  - php vendor/bin/coveralls -v
