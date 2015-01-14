@@ -7,10 +7,9 @@ use Midnight\Image\ImageFeature\HeightAware;
 use Midnight\Image\ImageFeature\WidthAware;
 use Midnight\Image\ImageInterface;
 use Midnight\Image\Plugin\ImageUrl;
-use Midnight\Image\Plugin\PluginInterface;
 use Midnight\Image\Plugin\Save;
 
-class ResponsiveImage implements PluginInterface
+class ResponsiveImage
 {
     /**
      * @var string

@@ -21,7 +21,6 @@ class PluginManager extends AbstractPluginManager
         // Add bundled plugins
         $this->setInvokableClass('contain', Contain::class);
         $this->setInvokableClass('cover', Cover::class);
-        $this->setFactory('responsiveImage', ResponsiveImageFactory::class);
     }
 
     /**
