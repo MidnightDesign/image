@@ -5,10 +5,12 @@
     "license": "MIT",
     "require": {
         "php": "~5.5",
+        "ext-gd": "*",
         "zendframework/zend-servicemanager": "~2.3"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
+        "satooshi/php-coveralls": "dev-master",
+        "phpunit/phpunit": "~4.4"
     },
     "authors": [
         {
