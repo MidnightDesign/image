@@ -21,6 +21,6 @@ class ImageUrl implements PluginInterface
 
     public function __invoke(ImageInterface $image)
     {
-        return str_replace(realpath($this->publicDirectory), '', realpath($image->getFile()));
+        return str_replace('\\', '/', str_replace(realpath($this->publicDirectory), '', realpath($image->getFile())));
     }
 }
